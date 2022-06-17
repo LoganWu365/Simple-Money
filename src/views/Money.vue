@@ -1,6 +1,7 @@
 <template>
     <div>
         <h3>money</h3>
+        <Nav />
     </div>
 </template>
 
