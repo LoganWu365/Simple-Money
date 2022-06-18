@@ -6,6 +6,7 @@
 
 <script lang="ts">
     //引入svg图片目录
+    // eslint-disable-next-line no-undef
     let importAll =(requireContext: __WebpackModuleApi.RequireContext) => requireContext.keys().forEach(requireContext);
     try {
       importAll(require.context('../assets/icons',true,/\.svg$/));
