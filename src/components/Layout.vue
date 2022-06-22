@@ -1,10 +1,10 @@
 <template>
-    <div class="nav-wrapper">
-        <div class="content">
-            <slot />
-        </div>
-        <Nav />
+  <div class="layout-wrapper" :class="classPrefix && `${classPrefix}-wrapper`">
+    <div class="content" :class="classPrefix && `${classPrefix}-content`   ">
+      <slot/>
     </div>
+    <Nav/>
+  </div>
 </template>
 
 <script>
@@ -13,18 +13,20 @@
     export default {
         components: {
             Nav
-        }
-    }
+        },
+        props: ['classPrefix'],
+        name: 'Layout'
+    };
 </script>
 
 <style lang="scss" scoped>
-    .nav-wrapper {
+    .layout-wrapper {
         display: flex;
         flex-direction: column;
         height: 100vh;
     }
     .content {
         flex-grow: 1;
-        overflow: auto;
+        overflow:auto;
     }
 </style>
