@@ -17,7 +17,8 @@
   @Component
   export default class Tags extends Vue {
     @Prop(Array)dataSource :string[] | undefined;
-    selectedTags: string[] = [];
+    @Prop(Array)value !:string[];
+    selectedTags = this.value;
     toggle(tag :string){
       const index = this.selectedTags.indexOf(tag);
       if(index >= 0){
@@ -25,6 +26,7 @@
       }else{
         this.selectedTags.push(tag);
       }
+      this.$emit("update:value",this.selectedTags)
     }
     add(){
       const name = window.prompt("请输入标签名");
