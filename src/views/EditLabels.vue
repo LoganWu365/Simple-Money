@@ -6,7 +6,7 @@
       <span class="rightIcon"></span>
     </div>
     <div class="form-wrapper">
-      <Notes field-name="标签名" placeholder="请输入标签名" :value.sync="tagId"/>
+      <Notes field-name="标签名" placeholder="请输入标签名" :value.sync="tag.name" @update:value="updateTag"/>
     </div>
     <div class="button-wrapper">
       <Button>删除标签</Button>
@@ -24,17 +24,24 @@ import Button from '@/components/Button.vue'
   components:{Notes,Button}
 })
 export default class EditLabels extends Vue {
+  tag?: {id:string,name:string} = undefined
  created(){
     const tagId = this.$route.params.id;
     tagListModel.fetch();
     let tags = tagListModel.data;
-    if(tags.filter(item => item.id === tagId)[0]){
-        return;
+    const tag = tags.filter(item => item.id === tagId)[0]
+    if(tag){
+        this.tag = tag;
     }else{
         this.$router.replace("/404")
     }
  }
-    tagId = this.$route.params.id;
+ updateTag(){
+  if(this.tag){
+    this.tag.id = this.tag.name
+    console.log(this.tag);
+  }
+ }
 }
 </script>
 

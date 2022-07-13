@@ -20,18 +20,14 @@
     components:{Tags,Notes,Types,NumberPad}
   })
   export default class Money extends Vue {
-    recordList = recordListModel.fetch();
     record: RecordItem = {
       tag: [],
       note: '',
       type: '-',
       amount: 0,//默认值
     }
-
     saveRecord(){
-      this.record.createAt = new Date();
-      let deepClone = recordListModel.clone(this.record);
-      this.recordList.push(deepClone);
+      recordListModel.create(this.record);
     }
     @Watch('recordList')
     onRecordListChange(){

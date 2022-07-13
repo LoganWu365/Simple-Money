@@ -1,13 +1,16 @@
 type RecordListModel = {
     data: RecordItem[],
-    clone: (data: RecordItem) => RecordItem,
     fetch: () => RecordItem[],
+    create: (record:RecordItem) => void,
     save: () => void
 }
 const recordListModel: RecordListModel = {
     data: [],
-    clone(data: RecordItem){
-        return JSON.parse(JSON.stringify(data));
+    create(record: RecordItem){
+        record.createAt = new Date();
+        const deepClone = JSON.parse(JSON.stringify(record));
+        this.data.push(deepClone);
+        this.save();
     },
     fetch(){
         this.data = JSON.parse(window.localStorage.getItem('recordList') || '[]') as RecordItem[]

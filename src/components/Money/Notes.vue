@@ -1,8 +1,8 @@
 <template>
   <div>
     <label class="notes">
-      <span class="name">{{this.fieldName}}</span>
-      <input type="text" :placeholder="this.placeholder" v-model="noteContent">
+      <span class="name">{{fieldName}}</span>
+      <input type="text" :placeholder="placeholder" v-model="noteContent">
     </label>
   </div>
 </template>
