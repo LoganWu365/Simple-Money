@@ -4,7 +4,7 @@
       <button @click="add">新增标签</button>
     </div>
     <ul class="current">
-      <li v-for="tag in dataSource" :key="tag" :class="{selected:selectedTags.indexOf(tag)>=0}" @click="toggle(tag)">{{tag}}</li>
+      <li v-for="tag in dataSource" :key="tag.id" :class="{selected:selectedTags.indexOf(tag.name)>=0}" @click="toggle(tag.name)">{{tag.name}}</li>
     </ul>
   </div>
 
@@ -13,12 +13,13 @@
 <script lang="ts">
   import Vue from 'vue'
   import {Component, Prop} from "vue-property-decorator"
+  import tagListModel from '@/models/tagListModel';
 
   @Component
   export default class Tags extends Vue {
-    @Prop(Array)dataSource :string[] | undefined;
     @Prop(Array)value !:string[];
     selectedTags = this.value;
+    dataSource = tagListModel.fetch();
     toggle(tag :string){
       const index = this.selectedTags.indexOf(tag);
       if(index >= 0){
@@ -30,14 +31,9 @@
     }
     add(){
       const name = window.prompt("请输入标签名");
-      if(name === ''){
-        window.alert("您输入的标签为空");
-      }else{
-        if(this.dataSource && name){
-          if(this.dataSource.indexOf(name) >= 0){window.alert("您输入的标签已存在")}
-          else{this.$emit('update:dataSource',this.dataSource.concat(name))}
-        }
-      }
+      const message = tagListModel.create(name as string);
+      if(message === 'null'){window.alert("您输入的标签为空")}
+      if(message === 'duplicated'){window.alert("您输入的标签已存在")}
     }
   }
 </script>
