@@ -34,7 +34,7 @@
       padding-right: 16px;
     }
     input {
-      height: 64px;
+      height: 48px;
       flex-grow: 1;
       background: transparent;
       border: none;
