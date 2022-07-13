@@ -37,6 +37,7 @@
         background: white;
         font-size: 16px;
         padding-left: 16px;
+        padding-right: 16px;
         > .tag {
             min-height: 44px;
             display: flex;
@@ -47,7 +48,6 @@
                 width: 18px;
                 height: 18px;
                 color: #666;
-                margin-right: 16px;
             }
         }
     }

@@ -1,7 +1,7 @@
 <template>
   <Layout>
     <div class="navBar">
-      <Icon class="leftIcon" name="left" @click="goBack"/>
+      <Icon class="leftIcon" name="left" />
       <span class="title">编辑标签</span>
       <span class="rightIcon"></span>
     </div>
@@ -35,10 +35,6 @@ export default class EditLabels extends Vue {
     }
  }
     tagId = this.$route.params.id;
-  goBack(){
-    console.log("1")
-  }
-
 }
 </script>
 
