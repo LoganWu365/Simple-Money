@@ -13,7 +13,7 @@
   
   @Component
   export default class Notes extends Vue{
-    @Prop(String)value!: string;
+    @Prop({required:true})value!: string;
     @Prop({required:true})fieldName!:string;
     @Prop()placeholder?:string
     noteContent = this.value;
