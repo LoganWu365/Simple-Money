@@ -44,6 +44,7 @@ export default class EditLabels extends Vue {
  remove(){
   if(this.tag){
           if(tagListModel.remove(this.tag.id)){
+            window.tagList = tagListModel.fetch();//更新全局变量
             this.$router.back();
           }
   }
