@@ -19,7 +19,7 @@
   export default class Tags extends Vue {
     @Prop(Array)value !:string[];
     selectedTags = this.value;
-    dataSource = tagListModel.fetch();
+    dataSource = window.tagList;
     toggle(tag :string){
       const index = this.selectedTags.indexOf(tag);
       if(index >= 0){

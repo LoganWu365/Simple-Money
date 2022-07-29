@@ -1,9 +1,5 @@
 import createId from '@/lib/createId'
 
-type Tag = {
-    id: string,
-    name: string
-}
 
 type TagListModel = {
     data: Tag[],

@@ -5,10 +5,13 @@ import router from './router'
 import store from './store'
 import Layout from '@/components/Layout.vue'
 import Icon from '@/components/Icon.vue'
+import tagListModel from './models/tagListModel'
 
 Vue.component('Layout',Layout)
 Vue.component('Icon',Icon)
 Vue.config.productionTip = false
+
+window.tagList = tagListModel.fetch();
 
 new Vue({
   router,
