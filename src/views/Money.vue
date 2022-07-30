@@ -13,8 +13,7 @@
   import Types from '@/components/Money/Types.vue';
   import Notes from '@/components/Money/Notes.vue';
   import Tags from '@/components/Money/Tags.vue';
-  import { Component,Watch } from 'vue-property-decorator';
-  import recordListModel from '@/models/recordListModel';
+  import { Component } from 'vue-property-decorator';
 
   @Component({
     components:{Tags,Notes,Types,NumberPad}
@@ -27,11 +26,7 @@
       amount: 0,//默认值
     }
     saveRecord(){
-      recordListModel.create(this.record);
-    }
-    @Watch('recordList')
-    onRecordListChange(){
-      recordListModel.save();
+      window.createRecord(this.record);
     }
   }
 </script>

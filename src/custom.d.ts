@@ -26,4 +26,6 @@ interface Window {
   removeTag:(id: string)=>string;
   updateTag:TagListModel['update'];
   findTag:(id: string)=>Tag;
+  recordList:RecordItem[];
+  createRecord:(record:RecordItem)=>void;
 }
