@@ -15,7 +15,6 @@
 </template>
 
 <script lang="ts">
-import tagListModel from '@/models/tagListModel';
 import  Vue  from 'vue';
 import {Component} from 'vue-property-decorator';
 import Notes from '@/components/Money/Notes.vue';
@@ -25,28 +24,22 @@ import Button from '@/components/Button.vue'
 })
 export default class EditLabels extends Vue {
   tag?:{id:string,name:string} = undefined
+  
  created(){
-    const tagId = this.$route.params.id;
-    tagListModel.fetch();
-    let tags = tagListModel.data;
-    const tag = tags.filter(item => item.id === tagId)[0]
-    if(tag){
-        this.tag = JSON.parse(JSON.stringify(tag));
-    }else{
+    this.tag = window.findTag(this.$route.params.id);
+    if(!this.tag){
         this.$router.replace("/404")
     }
  }
  updateTag(name:string){
     if(this.tag){
-          tagListModel.update(this.tag.id,name);
+          window.updateTag(this.tag.id,name);
     }
  }
  remove(){
   if(this.tag){
-          if(tagListModel.remove(this.tag.id)){
-            window.tagList = tagListModel.fetch();//更新全局变量
-            this.$router.back();
-          }
+          window.removeTag(this.tag.id);
+          this.$router.back();
   }
  }
  goBack(){

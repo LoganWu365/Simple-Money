@@ -1,14 +1,5 @@
 import createId from '@/lib/createId'
 
-
-type TagListModel = {
-    data: Tag[],
-    fetch:() => Tag[],
-    create: (name:string) => 'success' | 'duplicated' | 'null',//联合类型
-    update: (id:string,name:string) => string,
-    remove: (id:string) => string,
-    save:() => void
-}
 const tagListModel: TagListModel = {
     data: [],
     fetch(){
@@ -38,6 +29,7 @@ const tagListModel: TagListModel = {
                 this.save();
                 return 'success';
             }else{
+                window.alert("此标签已存在");
                 return 'duplicated';
             }
         }else{
@@ -54,7 +46,7 @@ const tagListModel: TagListModel = {
         }
         this.data.splice(index,1);
         this.save();
-        return 'success';
+        return 'success'
     },
     save(){
         window.localStorage.setItem('tagList',JSON.stringify(this.data));

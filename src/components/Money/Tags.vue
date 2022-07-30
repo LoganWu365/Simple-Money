@@ -13,7 +13,6 @@
 <script lang="ts">
   import Vue from 'vue'
   import {Component, Prop} from "vue-property-decorator"
-  import tagListModel from '@/models/tagListModel';
 
   @Component
   export default class Tags extends Vue {
@@ -30,10 +29,7 @@
       this.$emit("update:value",this.selectedTags)
     }
     add(){
-      const name = window.prompt("请输入标签名");
-      const message = tagListModel.create(name as string);
-      if(message === 'null'){window.alert("您输入的标签为空")}
-      if(message === 'duplicated'){window.alert("您输入的标签已存在")}
+      window.createTag();
     }
   }
 </script>
