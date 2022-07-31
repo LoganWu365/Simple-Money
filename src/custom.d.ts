@@ -19,13 +19,3 @@ type TagListModel = {
   remove: (id:string) => string,
   save:() => void
 }
-
-interface Window {
-  tagList:Tag[];
-  createTag:()=>void;
-  removeTag:(id: string)=>string;
-  updateTag:TagListModel['update'];
-  findTag:(id: string)=>Tag;
-  recordList:RecordItem[];
-  createRecord:(record:RecordItem)=>void;
-}

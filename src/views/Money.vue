@@ -14,6 +14,7 @@
   import Notes from '@/components/Money/Notes.vue';
   import Tags from '@/components/Money/Tags.vue';
   import { Component } from 'vue-property-decorator';
+  import store from '@/store/index2';
 
   @Component({
     components:{Tags,Notes,Types,NumberPad}
@@ -26,7 +27,7 @@
       amount: 0,//默认值
     }
     saveRecord(){
-      window.createRecord(this.record);
+      store.createRecord(this.record);
     }
   }
 </script>

@@ -19,6 +19,7 @@ import  Vue  from 'vue';
 import {Component} from 'vue-property-decorator';
 import Notes from '@/components/Money/Notes.vue';
 import Button from '@/components/Button.vue'
+import store from '@/store/index2';
 @Component({
   components:{Notes,Button}
 })
@@ -26,19 +27,19 @@ export default class EditLabels extends Vue {
   tag?:{id:string,name:string} = undefined
   
  created(){
-    this.tag = window.findTag(this.$route.params.id);
+    this.tag = store.findTag(this.$route.params.id);
     if(!this.tag){
         this.$router.replace("/404")
     }
  }
  updateTag(name:string){
     if(this.tag){
-          window.updateTag(this.tag.id,name);
+          store.updateTag(this.tag.id,name);
     }
  }
  remove(){
   if(this.tag){
-          window.removeTag(this.tag.id);
+          store.removeTag(this.tag.id);
           this.$router.back();
   }
  }

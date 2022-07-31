@@ -11,6 +11,7 @@
 </template>
 
 <script lang="ts">
+  import store from '@/store/index2';
   import Vue from 'vue'
   import {Component, Prop} from "vue-property-decorator"
 
@@ -18,7 +19,7 @@
   export default class Tags extends Vue {
     @Prop(Array)value !:string[];
     selectedTags = this.value;
-    dataSource = window.tagList;
+    dataSource = store.tagList;
     toggle(tag :string){
       const index = this.selectedTags.indexOf(tag);
       if(index >= 0){
@@ -29,7 +30,7 @@
       this.$emit("update:value",this.selectedTags)
     }
     add(){
-      window.createTag();
+      store.createTag();
     }
   }
 </script>
