@@ -45,7 +45,7 @@ export default class EditLabels extends Vue {
   }
   remove() {
     if (this.tag) {
-      this.$store.commit("removeTag");
+      this.$store.commit("removeTag",this.tag.id);
       this.$router.back();
     }
   }
