@@ -14,12 +14,14 @@
   import Notes from '@/components/Money/Notes.vue';
   import Tags from '@/components/Money/Tags.vue';
   import { Component } from 'vue-property-decorator';
-  import store from '@/store/index2';
 
   @Component({
     components:{Tags,Notes,Types,NumberPad}
   })
   export default class Money extends Vue {
+    created(){
+      this.$store.commit('fetchRecords');
+    }
     record: RecordItem = {
       tag: [],
       note: '',
@@ -27,7 +29,7 @@
       amount: 0,//默认值
     }
     saveRecord(){
-      store.createRecord(this.record);
+      this.$store.commit('createRecord',this.record);
     }
   }
 </script>
