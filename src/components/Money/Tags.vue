@@ -11,15 +11,22 @@
 </template>
 
 <script lang="ts">
-  import store from '@/store/index2';
   import Vue from 'vue'
   import {Component, Prop} from "vue-property-decorator"
 
-  @Component
+  @Component({
+    computed:{
+      dataSource(){
+        return this.$store.state.tagList
+      }
+    }
+  })
   export default class Tags extends Vue {
     @Prop(Array)value !:string[];
+    created(){
+      this.$store.commit('fetchTags')
+    }
     selectedTags = this.value;
-    dataSource = store.tagList;
     toggle(tag :string){
       const index = this.selectedTags.indexOf(tag);
       if(index >= 0){
@@ -30,7 +37,7 @@
       this.$emit("update:value",this.selectedTags)
     }
     add(){
-      store.createTag();
+      this.$store.commit('createTag')
     }
   }
 </script>
