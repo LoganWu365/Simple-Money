@@ -1,7 +1,7 @@
 <template>
   <Layout class-prefix="layout">
     <NumberPad :value.sync="record.amount" @submit="saveRecord"/>
-    <Types :value.sync="record.type"/>
+    <Tabs :value.sync="record.type" :data-source="typeList"/>
     <Notes field-name="备注" placeholder="在这里输入备注"  :value.sync="record.note"/>
     <Tags  :value.sync="record.tag" />
   </Layout>
@@ -10,13 +10,14 @@
 <script lang="ts">
   import Vue from 'vue'
   import NumberPad from '@/components/Money/NumberPad.vue';
-  import Types from '@/components/Money/Types.vue';
+  import Tabs from '@/components/Tabs.vue';
   import Notes from '@/components/Money/Notes.vue';
   import Tags from '@/components/Money/Tags.vue';
+  import TypeList from '@/constants/TypeList'
   import { Component } from 'vue-property-decorator';
 
   @Component({
-    components:{Tags,Notes,Types,NumberPad}
+    components:{Tags,Notes,Tabs,NumberPad}
   })
   export default class Money extends Vue {
     created(){
@@ -28,6 +29,7 @@
       type: '-',
       amount: 0,//默认值
     }
+    typeList = TypeList;
     saveRecord(){
       this.$store.commit('createRecord',this.record);
     }
