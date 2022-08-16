@@ -12,7 +12,7 @@ const store = new Vuex.Store({
   },
   mutations: {
     createRecord: function (state, record: RecordItem) {
-      record.createAt = new Date();
+      record.createAt = new Date().toISOString();
       const deepClone = JSON.parse(JSON.stringify(record));
       state.recordList.push(deepClone);
       store.commit('saveRecords');
