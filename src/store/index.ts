@@ -16,6 +16,7 @@ const store = new Vuex.Store({
       const deepClone = JSON.parse(JSON.stringify(record));
       state.recordList.push(deepClone);
       store.commit('saveRecords');
+      window.alert("记账成功");
     },
     saveRecords: function (state) {
       window.localStorage.setItem('recordList', JSON.stringify(state.recordList));

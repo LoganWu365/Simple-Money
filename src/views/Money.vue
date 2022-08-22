@@ -31,11 +31,16 @@
     }
     typeList = TypeList;
     saveRecord(){
+      if(this.record.tag.length === 0){
+        window.alert("请至少选择一个标签")
+        return;
+      }
       if(this.record.amount === 0){
         window.alert("您输入的数字为零，请重新输入")
         return;
       }
       this.$store.commit('createRecord',this.record);
+      this.record.amount = 0;
     }
   }
 </script>

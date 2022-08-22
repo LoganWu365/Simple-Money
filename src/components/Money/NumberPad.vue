@@ -22,14 +22,14 @@
 
 <script lang="ts">
   import Vue from 'vue'
-  import { Component, Prop } from 'vue-property-decorator'
+  import { Component, Prop, Watch } from 'vue-property-decorator'
 
 
   @Component
   export default class NumberPad extends Vue {
     @Prop(Number)value!: number
     output = this.value.toString();
-    inputNumber(event: MouseEvent){
+    inputNumber(event: MouseEvent){ 
       const button = (event.target as HTMLButtonElement);
       const input = button.textContent as string;
       if(this.output.length === 16){return;}
@@ -38,6 +38,8 @@
         return;
       }else if(this.output.indexOf('.') >= 0 && input === '.'){
         return;//双点特殊情况判断
+      }else if(this.output.indexOf('.') >= 0 && this.output.length - 1 === this.output.indexOf('.') + 2){
+        return;//小数点后最多两位
       }else{this.output += input;}//正常情况
     }
     removeNumber(){
@@ -53,9 +55,11 @@
     ok(){
       this.$emit("update:value",parseFloat(this.output));
       this.$emit("submit");
-      this.output = '0';
     }
-
+    @Watch('value')
+    onValueChanged(value: number){
+      this.output = value.toString();
+    }
   }
 </script>
 
