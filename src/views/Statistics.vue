@@ -1,7 +1,7 @@
 <template>
   <Layout>
     <Tabs :value.sync="type" classPrefix="type" :data-source="typeList" />
-    <ol>
+    <ol v-if="groupedList.length > 0">
       <li v-for="(group,index) in groupedList" :key="index">
         <h3 class="title">{{beautify(group.title)}}<span>￥{{group.totalAmount}}</span></h3>
         <ol>
@@ -13,6 +13,7 @@
         </ol>
       </li>
     </ol>
+    <div v-else class="noResult">没有相关记录</div>
   </Layout>
 </template>
 <script lang=ts>
@@ -56,7 +57,7 @@ export default class Statistics extends Vue {
     const newList = JSON.parse(JSON.stringify(recordList))
     .filter((item: { type: string; }) => item.type === this.type)
     .sort((a:RecordItem,b:RecordItem)=> dayjs(b.createAt).valueOf() - dayjs(a.createAt).valueOf());
-    if(newList.length === 0){return  [] as Result}
+    if(newList.length === 0){return  [] as Result}                                
     const groupedList = [{title:dayjs(newList[0].createAt).format("YYYY-MM-DD"),items:[newList[0]],totalAmount:0}];
     for(let i=1;i<newList.length;i++){
       const current = newList[i];
@@ -83,6 +84,10 @@ export default class Statistics extends Vue {
 </script>
 
 <style lang="scss" scoped>
+.noResult {
+  padding: 16px;
+  text-align: center;
+}
 ::v-deep {
   .type-tabs-item {
     background: #c4c4c4;
