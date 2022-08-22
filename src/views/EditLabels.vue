@@ -10,7 +10,7 @@
         field-name="标签名"
         placeholder="请输入标签名"
         :value.sync="tag.name"
-        @update:value="updateTag"
+        @blur="updateTag(tag.name)"
       />
     </div>
     <div class="button-wrapper">
