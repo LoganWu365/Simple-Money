@@ -2,7 +2,7 @@
   <div>
     <label class="notes">
       <span class="name">{{fieldName}}</span>
-      <input type="text" :placeholder="placeholder" v-model="noteContent" @blur="$emit('blur',$event)">
+      <input type="text" :placeholder="placeholder" v-model.lazy="noteContent" >
     </label>
   </div>
 </template>

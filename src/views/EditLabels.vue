@@ -10,7 +10,7 @@
         field-name="标签名"
         placeholder="请输入标签名"
         :value.sync="tag.name"
-        @blur="updateTag(tag.name)"
+        @update:value="updateTag"
       />
     </div>
     <div class="button-wrapper">
@@ -39,6 +39,7 @@ export default class EditLabels extends Vue {
   }
   updateTag(name: string) {
     if (this.tag) {
+      if(name === ''){window.alert("您输入的标签名为空，请重新输入");return;}
       const id = this.tag.id;
       this.$store.commit('updateTag',{id,name});
     }
