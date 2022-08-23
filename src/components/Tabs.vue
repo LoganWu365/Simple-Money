@@ -28,6 +28,7 @@ export default class Tabs extends Vue {
   liClass(item: DataSourceItem) {
     return {
       selected: item.value === this.value,
+      [this.classPrefix + "-tabs-item" + item.value]: this.classPrefix,
       [this.classPrefix + "-tabs-item"]: this.classPrefix,
     };
   }
@@ -40,25 +41,25 @@ export default class Tabs extends Vue {
 
 <style lang="scss" scoped>
 .tabs {
-  background: #c4c4c4;
   display: flex;
   text-align: center;
-  font-size: 24px;
+  font-size: 18px;
+  margin-top: 10px;
+  margin-left: 80px;
+  margin-right: 80px;
   > li {
     width: 50%;
-    height: 64px;
+    height: 40px;
     display: flex;
+    background: rgb(254, 254, 254);
+    color: rgb(79,119,230);
     justify-content: center;
     align-items: center;
     position: relative;
-    &.selected::after {
-      content: "";
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 4px;
-      background: #333;
+    &.selected {
+      background: rgb(78,118,229);
+      color: rgb(254,254,254);
+      overflow: hidden;
     }
   }
 }

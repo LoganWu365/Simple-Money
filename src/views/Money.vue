@@ -1,9 +1,9 @@
 <template>
   <Layout class-prefix="layout">
     <NumberPad :value.sync="record.amount" @submit="saveRecord"/>
-    <Tabs :value.sync="record.type" :data-source="typeList"/>
     <Notes field-name="备注：" placeholder="点击写备注哦~"  :value.sync="record.note"/>
     <Tags  :value.sync="record.tag" />
+    <Tabs :value.sync="record.type" :data-source="typeList" classPrefix="money"/>
   </Layout>
 </template>
 
@@ -45,9 +45,17 @@
   }
 </script>
 
-<style lang="scss">
-  .layout-content {
+<style lang="scss" scoped>
+  ::v-deep {
+    .layout-content {
     display: flex;
     flex-direction: column-reverse;
+  }
+    .money-tabs-item- {
+      border-radius: 10px 0 0 10px;
+    }
+    .money-tabs-item\+ {
+      border-radius: 0 10px 10px 0;
+    }
   }
 </style>

@@ -1,6 +1,14 @@
 <template>
   <Layout>
     <Tabs :value.sync="type" classPrefix="type" :data-source="typeList" />
+    <div class="block">
+      <el-date-picker
+        v-model="selectDate"
+        type="date"
+        placeholder="选择日期"
+        size="small">
+      </el-date-picker>
+    </div>
     <ol v-if="groupedList.length > 0">
       <li v-for="(group,index) in groupedList" :key="index">
         <h3 class="title">{{beautify(group.title)}}<span>￥{{group.totalAmount}}</span></h3>
@@ -28,7 +36,8 @@ import dayjs from "dayjs"
 export default class Statistics extends Vue {
   type = "-";
   typeList = TypeList;
-  
+      selectDate = '';
+
   beautify(time:string){
     const day = dayjs(time);
     const now = dayjs();
