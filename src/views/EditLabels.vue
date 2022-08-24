@@ -1,22 +1,25 @@
 <template>
   <Layout>
-    <div class="navBar">
-      <Icon class="leftIcon" name="left" @click="goBack" />
-      <span class="title">编辑标签</span>
-      <span class="rightIcon"></span>
+    <div class="wrapper">
+      <div class="navBar">
+        <Icon class="leftIcon" name="left" @click="goBack" />
+        <span class="title">编辑标签</span>
+        <span class="rightIcon"></span>
+      </div>
+      <div class="tagIcon"><Icon :name="tag.iconName" /></div>
+      <div class="form-wrapper">
+        <Notes
+          field-name="标签名"
+          placeholder="请输入标签名"
+          :value.sync="tag.name"
+          @update:value="updateTag"
+        />
+      </div>
+      <div class="button-wrapper">
+        <Button @click="remove" class="button">删除标签</Button>
+      </div>
     </div>
-    <div class="form-wrapper">
-      <Notes
-        field-name="标签名"
-        placeholder="请输入标签名"
-        :value.sync="tag.name"
-        @update:value="updateTag"
-      />
-    </div>
-    <div class="button-wrapper">
-      <Button @click="remove">删除标签</Button>
-    </div>
-  </Layout>
+    </Layout>
 </template>
 
 <script lang="ts">
@@ -29,6 +32,7 @@ import Button from "@/components/Button.vue";
 })
 export default class EditLabels extends Vue {
   created() {
+    this.$store.commit('fetchTags');
     this.$store.commit("findTag", this.$route.params.id);
     if (!this.tag) {
       this.$router.replace("/404");
@@ -57,30 +61,69 @@ export default class EditLabels extends Vue {
 </script>
 
 <style lang="scss" scoped>
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  align-items: center;
+}
 .navBar {
+  width: 100%;
   text-align: center;
   font-size: 16px;
   padding: 12px 16px;
-  background: white;
+  background: #4E76E5;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  > .title {
+    color: white;
+  }
   > .leftIcon {
     width: 24px;
     height: 24px;
+    color: white;
   }
   > .rightIcon {
     width: 24px;
     height: 24px;
   }
 }
+.tagIcon {
+  display: flex;
+  width: 150px;
+  height: 150px;
+  border-radius: 100px;
+  margin-top: 40px;
+  justify-content: center;
+  align-items: center;
+  font-size: 100px;
+  color: white;
+  background-color: #585757;
+}
 .form-wrapper {
   background: white;
-  margin-top: 8px;
+  margin-top: 40px;
+  margin-left:20px;
+  margin-right: 20px;
+  border-radius: 15px;
+}
+::v-deep {
+  .notes {
+    padding-left: 20px;
+    .name {
+      font-size: 16px;
+      font-weight: 600;
+    }
+  }
 }
 .button-wrapper {
   text-align: center;
   padding: 16px;
   margin-top: 28px;
+  .button {
+    background-color: #F56C6C;
+    color: white;
+  }
 }
 </style>
