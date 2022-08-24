@@ -1,6 +1,9 @@
 <template>
   <div class="numberPad">
-    <div class="output">{{output}}</div>
+    <div class="number">
+      <div class="tagIcon"><Icon :name="tagName"/></div>
+      <div class="output"><Icon name="rmb"/>{{output}}</div>
+    </div>
     <div class="buttons">
       <button @click="inputNumber">1</button>
       <button @click="inputNumber">2</button>
@@ -28,11 +31,20 @@
   @Component
   export default class NumberPad extends Vue {
     @Prop(Number)value!: number
+    @Prop(Array)tag!: string[]
+    get tagName(){
+      if(this.tag.length === 0){
+        return 'empty'
+      }else{
+        this.$store.commit("fetchTags");
+        return this.$store.state.tagList.filter((item:{name:string})=> item.name === this.tag[0])[0].iconName;
+      }
+    }
     output = this.value.toString();
     inputNumber(event: MouseEvent){ 
       const button = (event.target as HTMLButtonElement);
       const input = button.textContent as string;
-      if(this.output.length === 16){return;}
+      if(this.output.length === 14){return;}
       if(this.output === '0' && '0123456789'.indexOf(input) >= 0 ){
         this.output = input;
         return;
@@ -66,15 +78,22 @@
 <style lang="scss" scoped>
   @import "~@/assets/style/helper.scss";
   .numberPad {
-    .output {
-      @extend %clearFix;
+    .number {
       @extend %innerShadow;
+      display: flex;
       background: #fff;
       font-size: 36px;
       font-family: Consolas, monospace;
       padding: 0px 16px;
-      text-align: right;
+      justify-content: space-between;
       overflow: auto;
+      .tagIcon {
+        color: #333333;
+      }
+      .output {
+        display: flex;
+        align-items: center;
+      }
     }
     .buttons {
       @extend %clearFix;
