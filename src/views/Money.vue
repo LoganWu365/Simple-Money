@@ -1,8 +1,8 @@
 <template>
   <Layout class-prefix="layout">
-    <NumberPad :value.sync="record.amount" @submit="saveRecord"/>
+    <NumberPad :value.sync="record.amount" @submit="saveRecord" :tag="record.tag"/>
     <Notes field-name="备注：" placeholder="点击写备注哦~"  :value.sync="record.note"/>
-    <Tags  :value.sync="record.tag" />
+    <Tags  :value.sync="record.tag" :type="record.type"/>
     <Tabs :value.sync="record.type" :data-source="typeList" classPrefix="money"/>
   </Layout>
 </template>
@@ -56,6 +56,14 @@
     }
     .money-tabs-item\+ {
       border-radius: 0 10px 10px 0;
+    }
+    .tabs {
+      margin-top: 10px;
+      margin-left: 80px;
+      margin-right: 80px;
+    }
+    .notes {
+      font-size: 18px;
     }
   }
 </style>
