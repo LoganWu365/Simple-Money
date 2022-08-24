@@ -1,81 +1,97 @@
 <template>
   <div class="tags">
-    <div class="new">
-      <button @click="add">新增标签</button>
-    </div>
     <ul class="current">
-      <li v-for="tag in dataSource" :key="tag.id" :class="{selected:selectedTags.indexOf(tag.name)>=0}" @click="toggle(tag.name)">{{tag.name}}</li>
+      <li
+        v-for="tag in dataSource"
+        :key="tag.id"
+        :class="{ selected: selectedTags.indexOf(tag.name) >= 0 }"
+      >
+      <div class="iconName" @click="toggle(tag.name)"><Icon :name="tag.iconName"/></div>
+        <div class="name">{{tag.name}}</div>
+      </li>
+      <li >
+        <div class="iconName" @click="add"><Icon name="add"/></div>
+        <div><b>添加标签</b></div>
+      </li>
     </ul>
   </div>
-
 </template>
 
 <script lang="ts">
-  import Vue from 'vue'
-  import {Component, Prop} from "vue-property-decorator"
+import Vue from "vue";
+import { Component, Prop, Watch } from "vue-property-decorator";
 
-  @Component({
-    computed:{
-      dataSource(){
-        return this.$store.state.tagList
-      }
-    }
-  })
-  export default class Tags extends Vue {
-    @Prop(Array)value !:string[];
-    created(){
-      this.$store.commit('fetchTags')
-    }
-    selectedTags = this.value;
-    toggle(tag :string){
-      const index = this.selectedTags.indexOf(tag);
-      if(index >= 0){
-        this.selectedTags.splice(index,1)
-      }else{
-        this.selectedTags = [tag];
-      }
-      this.$emit("update:value",this.selectedTags)
-    }
-    add(){
-      this.$store.commit('createTag')
-    }
+@Component
+export default class Tags extends Vue {
+  @Prop(Array) value!: string[];
+  @Prop(String) type!:string;
+  created() {
+    this.$store.commit("fetchTags");
+    this.$store.commit("saveTags");
   }
+  get dataSource(){
+      return this.$store.state.tagList.filter((item :{type:string}) => item.type === this.type)
+  }
+  selectedTags = this.value;
+  toggle(tag: string) {
+    const index = this.selectedTags.indexOf(tag);
+    if (index >= 0) {
+      this.selectedTags.splice(index, 1);
+    } else {
+      this.selectedTags = [tag];
+    }
+    this.$emit("update:value", this.selectedTags);
+  }
+  add() {
+    this.$store.commit("createTag",this.type);
+  }
+  @Watch('type')
+  onTypeChange(){
+    this.selectedTags = [];
+    this.$emit("update:value", this.selectedTags);
+  }
+}
 </script>
 
 <style lang="scss" scoped>
-  .tags {
-    font-size: 14px;
-    padding: 16px;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column-reverse;
-    > .current {
+.tags {
+  font-size: 14px;
+  padding: 16px;
+  padding-top: 25px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  > .current {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    row-gap: 20px;
+    max-height: 35vh;
+    overflow: scroll;
+    > li {
       display: flex;
-      flex-wrap: wrap;
-      > li {
-        background: #d9d9d9;
-        $h: 24px;
+      flex-direction: column;
+      align-items: center;
+      > .iconName {
+        $h:50px;
         height: $h;
+        width: $h;
         line-height: $h;
-        border-radius: $h/2;
-        padding: 0 16px;
-        margin-right: 12px;
-        margin-top: 4px;
-        &.selected {
-          background: darken(#d9d9d9,50%);
-          color: white;
-        }
+        border-radius: $h;
+        font-size: 20px;
+        text-align: center;
+        background-color: #e7e7e7;
       }
-    }
-    > .new {
-      padding-top: 16px;
-      button {
-        background: transparent;
-        border: none;
-        color: #999;
-        border-bottom: 1px solid;
-        padding: 0 4px;
+      .name {
+        font-weight: 600;
+      }
+      &.selected {
+        > .iconName {
+        background: darken(#d9d9d9, 50%);
+        color: white;
+        }
+
       }
     }
   }
+}
 </style>
