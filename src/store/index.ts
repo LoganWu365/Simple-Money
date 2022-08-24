@@ -27,21 +27,25 @@ const store = new Vuex.Store({
     findTag: function (state, id: string) {
       state.currentTag = JSON.parse(JSON.stringify(state.tagList.filter(item => item.id === id)[0]));
     },
-    createTag: function (state) {
+    createTag: function (state,type) {
       const name = window.prompt("请输入标签名");
       if (name === null) { return }
       if (name === '') {
         window.alert("您输入的标签为空");
+        return;
       }
       const nameList = state.tagList.map(item => item.name)
       if (nameList.indexOf(name) >= 0) {
         window.alert("您输入的标签已存在");
+        return;
       }//返回字符串判断错误信息
       const id = createId().toString();
       const newTag: Tag = {
         id: id,
-        name: name
-      }
+        name: name,
+        iconName: 'star',
+        type: type
+      };
       state.tagList.push(newTag);
       store.commit('saveTags');
     },
@@ -75,7 +79,17 @@ const store = new Vuex.Store({
       window.localStorage.setItem('tagList', JSON.stringify(state.tagList));
     },
     fetchTags: function (state) {
-      state.tagList = JSON.parse(window.localStorage.getItem('tagList') || '[]') as Tag[]
+      state.tagList = JSON.parse(window.localStorage.getItem('tagList') || `[
+        { "id": "0", "name": "一般","iconName":"normal","type":"-"},
+        { "id": "1", "name": "餐饮","iconName":"food","type":"-"},
+        { "id": "2", "name": "购物","iconName":"shop","type":"-"},
+        { "id": "3", "name": "服饰","iconName":"cloth","type":"-"},
+        { "id": "4", "name": "工资","iconName":"pay","type":"+"},
+        { "id": "5", "name": "投资","iconName":"invest","type":"+"},
+        { "id": "6", "name": "奖金","iconName":"award","type":"+"},
+        { "id": "7", "name": "副业","iconName":"partTime","type":"+"},
+        { "id": "8", "name": "股票","iconName":"stock","type":"+"}
+      ]`) as Tag[]
     },
   },
   actions: {
