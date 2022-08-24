@@ -8,7 +8,9 @@ type RecordItem = {
 
 type Tag = {
     id: string,
-    name: string
+    name: string,
+    iconName:string,
+    type: string
 }
 
 type TagListModel = {
