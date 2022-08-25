@@ -18,7 +18,7 @@ const routes: Array<RouteConfig> = [
     component:Money
   },
   {
-    path:'/labels',
+    path:'/labels/:type',
     component:Labels
   },
   {
