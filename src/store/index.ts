@@ -8,7 +8,8 @@ const store = new Vuex.Store({
   state: {
     recordList: [] as RecordItem[],
     tagList: [] as Tag[],
-    currentTag: {} as Tag
+    currentTag: {} as Tag,
+    amount: '0' as string
   },
   mutations: {
     createRecord: function (state, record: RecordItem) {
@@ -27,8 +28,7 @@ const store = new Vuex.Store({
     findTag: function (state, id: string) {
       state.currentTag = JSON.parse(JSON.stringify(state.tagList.filter(item => item.id === id)[0]));
     },
-    createTag: function (state,type) {
-      const name = window.prompt("请输入标签名");
+    createTag: function (state,{name,type}) {
       if (name === null) { return }
       if (name === '') {
         window.alert("您输入的标签为空");
@@ -91,6 +91,29 @@ const store = new Vuex.Store({
         { "id": "8", "name": "股票","iconName":"stock","type":"+"}
       ]`) as Tag[]
     },
+    inputNumber: function(state,event:MouseEvent) {
+      const button = (event.target as HTMLButtonElement);
+      const input = button.textContent as string;
+      if(state.amount.length === 14){return;}
+      if(state.amount === '0' && '0123456789'.indexOf(input) >= 0 ){
+        state.amount = input;
+        return;
+      }else if(state.amount.indexOf('.') >= 0 && input === '.'){
+        return;//双点特殊情况判断
+      }else if(state.amount.indexOf('.') >= 0 && state.amount.length - 1 === state.amount.indexOf('.') + 2){
+        return;//小数点后最多两位
+      }else{state.amount += input;}//正常情况
+    },
+    removeNumber: function(state){
+      if(state.amount.length === 1){
+        state.amount = '0';
+      }else{
+        state.amount = state.amount.slice(0,-1);
+      }
+    },
+    clearNumber: function(state){
+      state.amount = '0';
+    }
   },
   actions: {
   },
