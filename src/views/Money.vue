@@ -40,6 +40,7 @@
         return;
       }
       this.$store.commit('createRecord',this.record);
+      this.$store.commit("clearNumber")
       this.record.amount = 0;
     }
   }
