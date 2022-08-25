@@ -10,8 +10,12 @@
         <div class="name">{{tag.name}}</div>
       </li>
       <li >
-        <div class="iconName" @click="add"><Icon name="add"/></div>
-        <div><b>添加标签</b></div>
+        <el-button type="text" @click="open" class="iconName add-wrapper" >
+          <Icon name="add" class="add"/>
+        </el-button>
+        <div>
+          <b>添加标签</b>
+        </div>
       </li>
     </ul>
   </div>
@@ -45,6 +49,18 @@ export default class Tags extends Vue {
   add() {
     this.$store.commit("createTag",this.type);
   }
+   open() {
+    this.$prompt('请输入标签', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      inputPattern: /^[\u4e00-\u9fa5]{1,4}$/,
+      inputErrorMessage: '请输入1-4个汉字'
+    }).then(({ value  }) => {
+      this.$store.commit('createTag',{name:value,type:this.type});
+    }).catch(() => {
+      console.log("取消输入")
+    });
+  }  
   @Watch('type')
   onTypeChange(){
     this.selectedTags = [];
@@ -71,7 +87,7 @@ export default class Tags extends Vue {
       display: flex;
       flex-direction: column;
       align-items: center;
-      > .iconName {
+      .iconName {
         $h:50px;
         height: $h;
         width: $h;
@@ -80,9 +96,17 @@ export default class Tags extends Vue {
         font-size: 20px;
         text-align: center;
         background-color: #e7e7e7;
+        .add {
+          font-size: 25px;
+          color: white;
+        }
       }
       .name {
         font-weight: 600;
+      }
+      .add-wrapper {
+        background-color: #4E76E5;
+        line-height: 0;
       }
       &.selected {
         > .iconName {

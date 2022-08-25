@@ -9,7 +9,7 @@
             </router-link>
         </div>
         <div class="createTag-wrapper">
-            <Button class="createTag" @click="addTag">新建标签</Button>
+            <el-button type="text" class="createTag" @click="open">新建标签</el-button>
         </div>
     </Layout>
 </template>
@@ -28,14 +28,24 @@
         created(){
             this.$store.commit('fetchTags')
         }
-        addTag(){
-            this.$store.commit('createTag',this.type);
-        }
         get tagList(){
             return this.$store.state.tagList.filter((item :{type:string}) => item.type === this.type)
         }
         typeList = typeList
-        type = '-'
+        type = this.$route.params.type;
+        
+        open() {
+        this.$prompt('请输入标签', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          inputPattern: /^[\u4e00-\u9fa5]{1,4}$/,
+          inputErrorMessage: '请输入1-4个汉字'
+        }).then(({ value  }) => {
+          this.$store.commit('createTag',{name:value,type:this.type});
+        }).catch(() => {
+          console.log("取消输入")
+        });
+      }
     }
 </script>
 
