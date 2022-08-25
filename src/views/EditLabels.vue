@@ -16,7 +16,7 @@
         />
       </div>
       <div class="button-wrapper">
-        <Button @click="remove" class="button">删除标签</Button>
+        <el-button class="button" type="text" @click="open">删除标签</el-button>
       </div>
     </div>
     </Layout>
@@ -48,12 +48,21 @@ export default class EditLabels extends Vue {
       this.$store.commit('updateTag',{id,name});
     }
   }
-  remove() {
-    if (this.tag) {
-      this.$store.commit("removeTag",this.tag.id);
-      this.$router.back();
-    }
-  }
+  open() {
+        this.$confirm('是否确定删除此标签?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          if (this.tag) {
+            let type = this.tag.type;
+            this.$store.commit("removeTag",this.tag.id);
+            this.$router.push(`/labels/${type}`);
+          }          
+        }).catch(() => {
+            console.log("取消删除")
+        });
+      }
   goBack() {
     this.$router.back();
   }
@@ -118,12 +127,15 @@ export default class EditLabels extends Vue {
   }
 }
 .button-wrapper {
-  text-align: center;
   padding: 16px;
   margin-top: 28px;
   .button {
+    border-radius: 4px;
+    border: none;
+    height: 40px;
     background-color: #F56C6C;
     color: white;
+    padding: 10px 16px;
   }
 }
 </style>
