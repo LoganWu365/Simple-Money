@@ -76,12 +76,12 @@ export default class Tags extends Vue {
   padding-top: 25px;
   flex-grow: 1;
   display: flex;
+  overflow: auto; 
   flex-direction: column;
   > .current {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     row-gap: 20px;
-    max-height: 35vh;
     overflow: scroll;
     > li {
       display: flex;
