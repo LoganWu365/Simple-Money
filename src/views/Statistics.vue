@@ -1,22 +1,49 @@
 <template>
   <Layout>
-    <Tabs :value.sync="type" classPrefix="type" :data-source="typeList" />
-    <div class="block">
-      <el-date-picker
-        v-model="selectDate"
-        type="date"
-        placeholder="选择日期"
-        size="small">
-      </el-date-picker>
+    <div class="datePicker-wrapper">
+      <select name="datePicker" v-model="year" class="datePicker">
+          <option value="2022">2022年</option>
+          <option value="2021">2021年</option>
+      </select>
+      <select name="datePicker" v-model="month" class="datePicker">
+          <option value="12">12月</option>
+          <option value="11">11月</option>
+      </select>
+    </div>
+    <div class="total-wrapper">
+      <div class="total">
+        <span class="total-word">总计结余</span>
+        <div class="total-number">50</div>
+      </div>
+      <div class="all">
+        <div class="all-flex">
+          <div class="all-word add">总收入</div>
+          <span>10000</span>
+        </div>
+        <div class="all-flex">
+          <div class="all-word pay">总支出</div>
+          <span>10000</span>
+        </div>
+      </div>
     </div>
     <ol v-if="groupedList.length > 0">
       <li v-for="(group,index) in groupedList" :key="index">
-        <h3 class="title">{{beautify(group.title)}}<span>￥{{group.totalAmount}}</span></h3>
-        <ol>
+        <h3 class="title">
+          {{beautify(group.title)}}
+          <span>周二</span>
+          <span>收入￥{{group.totalAmount}}</span>
+          <span>支出￥{{group.totalAmount}}</span>
+        </h3>
+        <ol class="recordList">
           <li v-for="item in group.items" :key="item.createAt" class="record">
-            <span>{{tagString(item.tag)}}</span>
-            <span class="notes">{{item.note}}</span>
-            <span>￥{{item.amount}}</span>
+            <div class="icon-wrapper">
+              <Icon name="star" class="icon"/>
+            </div>
+            <div class="record-notes">
+              <span class="tagName">{{tagString(item.tag)}}</span>
+              <span class="notes">{{item.note}}</span>
+            </div>
+            <span class="amount">￥{{item.amount}}</span>
           </li>
         </ol>
       </li>
@@ -28,16 +55,14 @@
 import Vue from "vue";
 import Tabs from "@/components/Tabs.vue";
 import { Component } from "vue-property-decorator";
-import TypeList from "@/constants/TypeList";
 import dayjs from "dayjs"
 @Component({
   components: { Tabs },
 })
 export default class Statistics extends Vue {
-  type = "-";
-  typeList = TypeList;
-      selectDate = '';
-
+  selectDate = '';
+  year = '2022';
+  month = '11'
   beautify(time:string){
     const day = dayjs(time);
     const now = dayjs();
@@ -64,7 +89,6 @@ export default class Statistics extends Vue {
     const {recordList} = this;
     type Result = { title: string, total?: number, items: RecordItem[]}[]
     const newList = JSON.parse(JSON.stringify(recordList))
-    .filter((item: { type: string; }) => item.type === this.type)
     .sort((a:RecordItem,b:RecordItem)=> dayjs(b.createAt).valueOf() - dayjs(a.createAt).valueOf());
     if(newList.length === 0){return  [] as Result}                                
     const groupedList = [{title:dayjs(newList[0].createAt).format("YYYY-MM-DD"),items:[newList[0]],totalAmount:0}];
@@ -93,42 +117,132 @@ export default class Statistics extends Vue {
 </script>
 
 <style lang="scss" scoped>
+.datePicker-wrapper {
+  height: 45px;
+  padding:5px 16px;
+  line-height: 45px;
+  background-color: #fff;
+  .datePicker {
+    border: none;
+    color: #4F77E7;
+    font-size:24px;
+    margin-right: 20px;
+    background-color: white;
+  }
+}
+.total-wrapper {
+  margin: 22px 16px 30px;
+  padding: 28px 19px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 4px 7px rgba(155, 142, 142, 0.25);
+  overflow: auto;
+  .total {
+    margin-bottom: 20px;
+    &-word {
+      font-size: 14px;
+      color: #575757;
+    }
+    &-number {
+      margin-top: 5px;
+      font-size: 25px;
+      font-weight: bold;
+      color: #343434;
+    }
+  }
+  .all {
+    display: flex;
+    color: #767676;
+    &-flex {
+      display: flex;
+      align-content: center;
+      margin-right: 28px;
+      .all-word {
+        width: 45px;
+        height: 20px;
+        font-size: 12px;
+        line-height: 20px;
+        text-align: center;
+        color: #fff;
+        border-radius: 10px;
+      }
+      span {
+        display: block;
+        line-height: 20px;
+        margin-left: 9px;
+      }
+      .add {
+        background-color: #91D781;
+      }
+      .pay {
+        background-color: #FF9391;
+      }
+    }
+    &-pay {
+      display: flex;
+    }
+  }
+}
 .noResult {
   padding: 16px;
   text-align: center;
 }
-::v-deep {
-  .type-tabs-item {
-    background: #c4c4c4;
-    &.selected {
-      background: white;
-      &::after {
-        display: none;
-      }
-    }
-  }
-  .tabs > .interval-tabs-item {
-    height: 48px;
-  }
-}
+
 
 %item {
   padding: 8px 16px;
   line-height: 24px;
   display: flex;
-  justify-content: space-between;
   align-content: center;
+  color: #767676;
+  font-size: 14px;
 }
 .title {
+  padding: 5px 22px 0px;
+  font-weight: 400;
+  justify-content: space-between;
+  color: #343D4E;
   @extend %item
 }
-.record {
-  background: white;
-  @extend %item;
+.recordList {
+  margin-top: 5px;
 }
-.notes {
-  margin-right: auto;
-  margin-left: 16px;
-  color: #999;
+.record {
+  @extend %item;
+  align-items: center;
+  background: white;
+  border-radius: 10px;
+  margin: 0px 16px 10px;
+  .icon-wrapper {
+    width: 50px;
+    height: 50px;
+    background-color: #343D4E;
+    display: flex;
+    border-radius: 50px;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    .icon {
+      font-size: 30px;
+    }
+  }
+  &-notes {
+    display: flex;
+    flex-direction: column;
+    margin-left: 22px;
+    color: #343D4E;
+    .tagName {
+      font-weight: bold;
+    }
+    .notes {
+      font-size: 12px;
+      color: #767676;
+}
+  }
+  .amount {
+    color: #343D4E;
+    font-weight: bold;
+    margin-left: auto;
+  }
 }
 </style>
