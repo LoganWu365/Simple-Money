@@ -13,6 +13,7 @@
           placeholder="请输入标签名"
           :value.sync="tag.name"
           @update:value="updateTag"
+          maxlength="4"
         />
       </div>
       <div class="button-wrapper">

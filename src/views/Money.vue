@@ -1,7 +1,7 @@
 <template>
   <Layout class-prefix="layout">
     <NumberPad :value.sync="record.amount" @submit="saveRecord" :tag="record.tag"/>
-    <Notes field-name="备注：" placeholder="点击写备注哦~"  :value.sync="record.note"/>
+    <Notes field-name="备注：" placeholder="点击写备注哦~(最多十五字)"  :value.sync="record.note" maxlength="15"/>
     <Tags  :value.sync="record.tag" :type="record.type"/>
     <Tabs :value.sync="record.type" :data-source="typeList" classPrefix="money"/>
   </Layout>
@@ -42,6 +42,7 @@
       this.$store.commit('createRecord',this.record);
       this.$store.commit("clearNumber")
       this.record.amount = 0;
+      this.record.note = '';
     }
   }
 </script>
