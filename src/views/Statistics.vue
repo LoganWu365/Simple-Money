@@ -3,11 +3,20 @@
     <div class="datePicker-wrapper">
       <select name="datePicker" v-model="year" class="datePicker">
           <option value="2022">2022年</option>
-          <option value="2021">2021年</option>
       </select>
       <select name="datePicker" v-model="month" class="datePicker">
           <option value="12">12月</option>
           <option value="11">11月</option>
+          <option value="10">10月</option>
+          <option value="09">9月</option>
+          <option value="08">8月</option>
+          <option value="07">7月</option>
+          <option value="06">6月</option>
+          <option value="05">5月</option>
+          <option value="04">4月</option>
+          <option value="03">3月</option>
+          <option value="02">2月</option>
+          <option value="01">1月</option>
       </select>
     </div>
     <div class="total-wrapper">
@@ -30,14 +39,14 @@
       <li v-for="(group,index) in groupedList" :key="index">
         <h3 class="title">
           {{beautify(group.title)}}
-          <span>周二</span>
-          <span>收入￥{{group.totalAmount}}</span>
-          <span>支出￥{{group.totalAmount}}</span>
+          <span>{{setDay(group.title)}}</span>
+          <span>收入￥{{group.totalAdd}}</span>
+          <span>支出￥{{group.totalPay}}</span>
         </h3>
         <ol class="recordList">
           <li v-for="item in group.items" :key="item.createAt" class="record">
             <div class="icon-wrapper">
-              <Icon name="star" class="icon"/>
+              <Icon name="" class="icon"/>
             </div>
             <div class="record-notes">
               <span class="tagName">{{tagString(item.tag)}}</span>
@@ -61,8 +70,8 @@ import dayjs from "dayjs"
 })
 export default class Statistics extends Vue {
   selectDate = '';
-  year = '2022';
-  month = '11'
+  year = dayjs().format("YYYY");
+  month = dayjs().format("MM");
   beautify(time:string){
     const day = dayjs(time);
     const now = dayjs();
@@ -78,6 +87,19 @@ export default class Statistics extends Vue {
       return day.format("M月D日")
     }
   }
+  setDay(time:string){
+    const day = dayjs(time).day();
+    switch (day) 
+    { 
+      case 0:return"周日"; 
+      case 1:return"周一"; 
+      case 2:return"周二"; 
+      case 3:return"周三"; 
+      case 4:return"周四"; 
+      case 5:return"周五"; 
+      case 6:return"周六"; 
+    }
+  }
   tagString(tags:[]){
     return tags.length === 0 ? '' : tags.join(',');
   }
@@ -87,24 +109,28 @@ export default class Statistics extends Vue {
 
   get groupedList(){
     const {recordList} = this;
-    type Result = { title: string, total?: number, items: RecordItem[]}[]
+    type Result = { title: string,  items: RecordItem[],totalAdd: number,totalPay:number}[]
     const newList = JSON.parse(JSON.stringify(recordList))
     .sort((a:RecordItem,b:RecordItem)=> dayjs(b.createAt).valueOf() - dayjs(a.createAt).valueOf());
     if(newList.length === 0){return  [] as Result}                                
-    const groupedList = [{title:dayjs(newList[0].createAt).format("YYYY-MM-DD"),items:[newList[0]],totalAmount:0}];
+    const groupedList = [{title:dayjs(newList[0].createAt).format("YYYY-MM-DD"),items:[newList[0]],totalAdd:0,totalPay:0}];
     for(let i=1;i<newList.length;i++){
       const current = newList[i];
       const last = groupedList[groupedList.length - 1];
       if(dayjs(current.createAt).isSame(dayjs(last.title),'day')){
         last.items.push(current);
       }else{
-        groupedList.push({title:dayjs(newList[i].createAt).format("YYYY-MM-DD"),items:[newList[i]],totalAmount:0});
+        groupedList.push({title:dayjs(newList[i].createAt).format("YYYY-MM-DD"),items:[newList[i]],totalAdd:0,totalPay:0});
       }
     }
     for(let n=0;n<groupedList.length;n++){
       groupedList[n].items.reverse();
       for(let i=0;i<groupedList[n].items.length;i++){
-        groupedList[n].totalAmount += groupedList[n].items[i].amount;
+        if(groupedList[n].items[i].type === '-'){
+            groupedList[n].totalPay += groupedList[n].items[i].amount;
+        }else if(groupedList[n].items[i].type === '+'){
+            groupedList[n].totalAdd += groupedList[n].items[i].amount;
+        }
       }
     }
     return groupedList;
@@ -131,7 +157,7 @@ export default class Statistics extends Vue {
   }
 }
 .total-wrapper {
-  margin: 22px 16px 30px;
+  margin: 22px 16px 25px;
   padding: 28px 19px;
   background-color: #fff;
   border-radius: 10px;
@@ -198,7 +224,7 @@ export default class Statistics extends Vue {
   font-size: 14px;
 }
 .title {
-  padding: 5px 22px 0px;
+  padding: 10px 22px 0px;
   font-weight: 400;
   justify-content: space-between;
   color: #343D4E;
