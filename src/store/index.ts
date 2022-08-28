@@ -55,6 +55,12 @@ const store = new Vuex.Store({
         const nameList = state.tagList.map(tag => tag.name);
         if (nameList.indexOf(name) < 0) {
           const tag = state.tagList.filter(tag => tag.id === id)[0];
+          for(let i=0;i<state.recordList.length;i++){
+            if(state.recordList[i].tag[0] === tag.name){
+              state.recordList[i].tag = [name];
+            }
+          }
+          store.commit('saveRecords');
           tag.name = name;
           store.commit('saveTags');
         } else {

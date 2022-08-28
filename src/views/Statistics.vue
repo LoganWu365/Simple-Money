@@ -2,7 +2,9 @@
   <Layout>
     <div class="datePicker-wrapper">
       <select name="datePicker" v-model="year" class="datePicker">
+          <option value="2021">2021年</option>
           <option value="2022">2022年</option>
+          <option value="2023">2023年</option>
       </select>
       <select name="datePicker" v-model="month" class="datePicker">
           <option value="12">12月</option>
@@ -22,16 +24,16 @@
     <div class="total-wrapper">
       <div class="total">
         <span class="total-word">总计结余</span>
-        <div class="total-number">50</div>
+        <div class="total-number">{{allMonth.add-allMonth.pay}}</div>
       </div>
       <div class="all">
         <div class="all-flex">
           <div class="all-word add">总收入</div>
-          <span>10000</span>
+          <span>{{allMonth.add}}</span>
         </div>
         <div class="all-flex">
           <div class="all-word pay">总支出</div>
-          <span>10000</span>
+          <span>{{allMonth.pay}}</span>
         </div>
       </div>
     </div>
@@ -46,13 +48,13 @@
         <ol class="recordList">
           <li v-for="item in group.items" :key="item.createAt" class="record">
             <div class="icon-wrapper">
-              <Icon name="" class="icon"/>
+              <Icon :name="tagIconName(item.tag[0])" class="icon"/>
             </div>
             <div class="record-notes">
               <span class="tagName">{{tagString(item.tag)}}</span>
               <span class="notes">{{item.note}}</span>
             </div>
-            <span class="amount">￥{{item.amount}}</span>
+            <span class="amount" :class="{addAmount:item.type === '+',payAmount:item.type==='-'}">￥{{item.amount}}</span>
           </li>
         </ol>
       </li>
@@ -106,11 +108,17 @@ export default class Statistics extends Vue {
   get recordList(){
     return this.$store.state.recordList;
   }
-
+  tagIconName(name:string){
+    const tagIconName = this.$store.state.tagList.filter((item: { name: string; }) => item.name === name)[0];
+    if(tagIconName){
+      return tagIconName.iconName;
+    }else {return 'star'}
+  }
   get groupedList(){
     const {recordList} = this;
     type Result = { title: string,  items: RecordItem[],totalAdd: number,totalPay:number}[]
     const newList = JSON.parse(JSON.stringify(recordList))
+    .filter((item: { createAt: string|number|dayjs.Dayjs|Date|null|undefined; }) => dayjs(this.year+'-'+this.month).isSame(dayjs(item.createAt),'month'))
     .sort((a:RecordItem,b:RecordItem)=> dayjs(b.createAt).valueOf() - dayjs(a.createAt).valueOf());
     if(newList.length === 0){return  [] as Result}                                
     const groupedList = [{title:dayjs(newList[0].createAt).format("YYYY-MM-DD"),items:[newList[0]],totalAdd:0,totalPay:0}];
@@ -135,9 +143,19 @@ export default class Statistics extends Vue {
     }
     return groupedList;
   }
-
+  get allMonth(){
+    let allMonthAdd = 0;
+    let allMonthPay = 0;
+    this.groupedList.forEach(item => allMonthAdd += item.totalAdd)
+    this.groupedList.forEach(item => allMonthPay += item.totalPay)
+    return {
+      add:allMonthAdd,
+      pay:allMonthPay
+    }
+  }
   beforeCreate(){
     this.$store.commit("fetchRecords");
+    this.$store.commit("fetchTags");
   }
 }
 </script>
@@ -269,6 +287,12 @@ export default class Statistics extends Vue {
     color: #343D4E;
     font-weight: bold;
     margin-left: auto;
+  }
+  .addAmount {
+    color: #91D781;
+  }
+  .payAmount {
+    color: #FF9391;
   }
 }
 </style>
