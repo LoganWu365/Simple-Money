@@ -1,4 +1,4 @@
-# lorney
+# Simple Money
 
 ## Project setup
 ```
