@@ -24,7 +24,7 @@
     <div class="total-wrapper">
       <div class="total">
         <span class="total-word">总计结余</span>
-        <div class="total-number">{{allMonth.add-allMonth.pay}}</div>
+        <div class="total-number">{{(allMonth.add-allMonth.pay).toFixed(2)}}</div>
       </div>
       <div class="all">
         <div class="all-flex">
