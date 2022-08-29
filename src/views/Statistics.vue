@@ -24,16 +24,16 @@
     <div class="total-wrapper">
       <div class="total">
         <span class="total-word">总计结余</span>
-        <div class="total-number">{{(allMonth.add-allMonth.pay).toFixed(2)}}</div>
+        <div class="total-number">{{parseFloat((allMonth.add-allMonth.pay).toFixed(2))}}</div>
       </div>
       <div class="all">
         <div class="all-flex">
           <div class="all-word add">总收入</div>
-          <span>{{allMonth.add}}</span>
+          <span>{{parseFloat(allMonth.add.toFixed(2))}}</span>
         </div>
         <div class="all-flex">
           <div class="all-word pay">总支出</div>
-          <span>{{allMonth.pay}}</span>
+          <span>{{parseFloat(allMonth.pay.toFixed(2))}}</span>
         </div>
       </div>
     </div>
@@ -42,8 +42,8 @@
         <h3 class="title">
           {{beautify(group.title)}}
           <span>{{setDay(group.title)}}</span>
-          <span>收入￥{{group.totalAdd}}</span>
-          <span>支出￥{{group.totalPay}}</span>
+          <span>收入￥{{parseFloat(group.totalAdd.toFixed(2))}}</span>
+          <span>支出￥{{parseFloat(group.totalPay.toFixed(2))}}</span>
         </h3>
         <ol class="recordList">
           <li v-for="item in group.items" :key="item.createAt" class="record">
@@ -66,7 +66,7 @@
 import Vue from "vue";
 import Tabs from "@/components/Tabs.vue";
 import { Component } from "vue-property-decorator";
-import dayjs from "dayjs"
+import dayjs from "dayjs";
 @Component({
   components: { Tabs },
 })
