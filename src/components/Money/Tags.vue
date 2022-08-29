@@ -22,6 +22,7 @@
 </template>
 
 <script lang="ts">
+import { MessageBoxInputData } from "element-ui/types/message-box";
 import Vue from "vue";
 import { Component, Prop, Watch } from "vue-property-decorator";
 
@@ -55,10 +56,11 @@ export default class Tags extends Vue {
       cancelButtonText: '取消',
       inputPattern: /^[\u4e00-\u9fa5]{1,4}$/,
       inputErrorMessage: '请输入1-4个汉字'
-    }).then(({ value  }) => {
+    }).then(res => {
+      const value = (res as MessageBoxInputData).value;
       this.$store.commit('createTag',{name:value,type:this.type});
     }).catch(() => {
-      console.log("取消输入")
+      console.log("取消输入");
     });
   }  
   @Watch('type')

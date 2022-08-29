@@ -20,6 +20,7 @@
     import Button from '@/components/Button.vue'
     import Tabs from "@/components/Tabs.vue";
     import typeList from "@/constants/TypeList";
+import { MessageBoxInputData } from "element-ui/types/message-box";
 
     @Component({
         components:{Button,Tabs}
@@ -40,7 +41,8 @@
           cancelButtonText: '取消',
           inputPattern: /^[\u4e00-\u9fa5]{1,4}$/,
           inputErrorMessage: '请输入1-4个汉字'
-        }).then(({ value  }) => {
+        }).then(res => {
+          const value = (res as MessageBoxInputData).value;
           this.$store.commit('createTag',{name:value,type:this.type});
         }).catch(() => {
           console.log("取消输入")
