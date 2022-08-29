@@ -24,9 +24,13 @@
         display: flex;
         flex-direction: column;
         height: 100vh;
+        
     }
     .content {
         flex-grow: 1;
-        overflow:auto;
+        overflow:auto;    
+        &::-webkit-scrollbar {
+        display: none;
+      }
     }
 </style>
