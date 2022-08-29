@@ -99,6 +99,7 @@ import { MessageBoxInputData } from "element-ui/types/message-box";
     .tabs {
         position: fixed;
         width: 100%;
+        max-width: 500px;
         > .label-tabs-item {
         height: 48px;
         }
