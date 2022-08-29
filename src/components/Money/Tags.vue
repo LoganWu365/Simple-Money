@@ -85,6 +85,9 @@ export default class Tags extends Vue {
     grid-template-columns: 1fr 1fr 1fr 1fr;
     row-gap: 20px;
     overflow: scroll;
+    &::-webkit-scrollbar {
+      display: none;
+    }
     > li {
       display: flex;
       flex-direction: column;
