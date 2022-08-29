@@ -17,4 +17,8 @@ body {
     background: #f1f2f6;
 }
 
+#app {
+  max-width: 500px;
+  margin: 0 auto;
+}
 </style>
