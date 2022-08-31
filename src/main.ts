@@ -18,3 +18,5 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount('#app')
+
+window.alert("用手机查看效果更好哦~")
